@@ -13,6 +13,15 @@ You will then be able to start a new jupyter kernel with the following command.
 
 You can now open the `onboarding-challenge` notebook inside you browser and start experimenting.
 
+### Submodule
+
+In order to fetch the source code of the dino run, please type the following commands:
+
+```
+git submodule init
+git submodule update
+```
+
 ## Common issues
 
 If you encounter issues regarding the connexion of the Muse headband, please refer to the [muse-lsl guide](https://github.com/alexandrebarachant/muse-lsl). You also have to make sure your bluetooth drivers are up to date (i.e. [bluez drivers](https://docs.ubuntu.com/core/en/stacks/bluetooth/bluez/docs/) if you are using linux). If you are working with Mac, a dongle is required to connect the Muse.
