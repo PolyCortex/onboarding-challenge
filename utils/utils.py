@@ -41,11 +41,12 @@ def acquire_eeg(duration, callback=print_eeg_callback, eeg_chunck=LSL_EEG_CHUNK)
 
     while (time() - t_init) < duration:
         try:
-            data, timestamps = inlet.pull_chunk(timeout=1.0,
-                                                max_samples=eeg_chunck)
+            chunk, timestamps = inlet.pull_chunk(timeout=1.0,
+                                                 max_samples=eeg_chunck)
 
             if timestamps:
-                callback(timestamps, data)
+                samples = {key: [sample[i] for sample in chunk] for i, key in enumerate(ch_names)}
+                callback(timestamps, samples)
         except KeyboardInterrupt:
             break
 
