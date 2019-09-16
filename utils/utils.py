@@ -43,6 +43,28 @@ def debounce_signal(signal, debouncing_time=0.1, period=1/256):
             signal[i: next_rising_edge] = [True] * falling_to_rising_idx_span
     return signal
 
+def scale_duty_cycle(signal, factor):
+    rising_edges = []
+    falling_edges = []
+
+    # Look for all pairs of rising and falling edges.
+    for i, is_blinking in enumerate(signal):
+        if is_blinking and not signal[i-1]:
+            rising_edges.append(i)
+        elif not is_blinking and signal[i-1]:
+            falling_edges.append(i)
+
+    duty_domains = [(rising_edges[i], falling_edges[i]) for i in range(len(rising_edges))]
+
+    for domain in duty_domains:
+        domain_span = domain[1] - domain[0]
+        scaled_domain_span = domain_span * factor
+        span_to_set = int((scaled_domain_span - domain_span)/2)
+        upper_bound = domain[1]+span_to_set
+        lower_bound = domain[0]-span_to_set
+        signal[lower_bound: upper_bound] = [True]*(upper_bound-lower_bound)
+    return signal
+
 
 def print_eeg_callback(timestamps, eeg_data):
     for i, data in enumerate(eeg_data):
